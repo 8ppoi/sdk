@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+cd "$(dirname "$0")/.."
 TARGET_DIR="./vendors"
 
 # 引数でベンダーIDを受け取る
