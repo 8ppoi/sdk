@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>8ppoi SDK</title>
+    <meta name="viewport" content="width=704,user-scalable=no"> 
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body class="flex-column">
+    ${render(_.templatePath.replace(/.html/, "/header.html"), _._)}
+    <hr>
+    ${render(_.templatePath, _._)}
+    <div style="flex-grow: 1;"></div>
+    <hr>
+    <div class="indent" style="text-align: right;">
+      <ul>
+        <li><a href="https://8ppoi.kentasaito.deno.net/">公式サイト</a></li>
+        <li><a href="/vendors/">ベンダーの一覧</a></li>
+        <li><a href="/cartridges/">カートリッジの一覧</a></li>
+        <li><a href="https://8ppoi.kentasaito.deno.net/docs/">ドキュメンテーション</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

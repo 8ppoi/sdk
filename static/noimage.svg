@@ -1,0 +1,55 @@
+<svg
+  style="background-color: rgb(0, 0, 0)"
+  xmlns="http://www.w3.org/2000/svg"
+  width="640"
+  height="480"
+  viewBox="0 0 32 24"
+>
+  <style>
+  .color-0 {
+    fill: hsl(0, 0%, 25%);
+  }
+  .color-15 {
+    fill: hsl(0, 0%, 75%);
+  }
+  </style>
+  <rect x="0" y="0" width="64" height="48" class="color-0" />
+  <g transform="translate(0, 0)">
+    <path
+      transform="translate(0, 0)"
+      d="M0,1 h2 v1 h-1 v5 h-1 Z M2,2 h1 v5 h-1 Z"
+      class="color-15"
+    ></path>
+    <path
+      transform="translate(4, 0)"
+      d="M1,1 h1 v1 h-1 Z M0,2 h1 v4 h-1 Z M2,2 h1 v4 h-1 Z M1,6 h1 v1 h-1 Z"
+      class="color-15"
+    ></path>
+    <path transform="translate(8, 0)" d="" class="color-15"></path>
+    <path
+      transform="translate(12, 0)"
+      d="M0,1 h3 v1 h-1 v4 h1 v1 h-3 v-1 h1 v-4 h-1 Z"
+      class="color-15"
+    ></path>
+    <path
+      transform="translate(16, 0)"
+      d="M0,1 h1 v1 h1 v-1 h1 v6 h-1 v-3 h-1 v3 h-1 Z"
+      class="color-15"
+    ></path>
+    <path
+      transform="translate(20, 0)"
+      d="M1,1 h1 v1 h-1 Z M0,2 h1 v2 h1 v-2 h1 v5 h-1 v-2 h-1 v2 h-1 Z"
+      class="color-15"
+    ></path>
+    <path
+      transform="translate(24, 0)"
+      d="M1,1 h2 v1 h-2 Z M0,2 h1 v4 h-1 Z M2,4 h1 v3 h-2 v-1 h1 Z"
+      class="color-15"
+    ></path>
+    <path
+      transform="translate(28, 0)"
+      d="M0,1 h3 v1 h-2 v1 h1 v1 h-1 v2 h2 v1 h-3 Z"
+      class="color-15"
+    ></path>
+  </g>
+</svg>

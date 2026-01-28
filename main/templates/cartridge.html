@@ -1,0 +1,17 @@
+<div class="indent">
+  <h1>${_.cartridge.name}</h1>
+  <div class="indent flex-column">
+    <div id="console">
+      <img id="artwork" style="width: 100%;" src="${_.cartridge.artwork ? `./${_.cartridge.artwork}` : `/static/noimage.svg`}">
+    </div>
+${renderIf(_.cartridge.description, "./cartridge/description.html", { description: _.cartridge.description })}
+  </div>
+</div>
+<script type="module">
+  import { sanitize } from "/static/security/sanitize.js";
+  import { Console } from "/consoles/${_.cartridge.consoleVersion}/Console.js";
+  import { Cartridge } from "/vendors/${_.vendor.id}/cartridges/${_.cartridge.id}/Cartridge.js";
+
+  const retainedGlobals = sanitize();
+  Console.onPower(Cartridge, { retainedGlobals });
+</script>

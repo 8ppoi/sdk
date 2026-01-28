@@ -1,0 +1,6 @@
+<div>
+  <i>カートリッジの説明</i>
+  <div class="indent flex-column">
+${_.description.split("\n\n").map((p) => `<p>${p}</p>`).map((l) => l.replaceAll("\n", "<br>\n")).join("\n")}
+  </div>
+</div>

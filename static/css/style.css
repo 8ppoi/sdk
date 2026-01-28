@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "MPLUS1Code";
+  src: url("/static/fonts/MPLUS1Code-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.indent {
+  margin: 0 0.5rem;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  width: 704px;
+  margin: 0 auto;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "MPLUS1Code", monospace;
+  font-size: 32px;
+  line-height: 1.5;
+}
+
+hr {
+  margin: 0.5rem 0;
+}
+
+a, a:visited {
+  color: hsl(210, 50%, 25%);
+}
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.error {
+  margin-bottom: 1rem;
+  color: hsl(0, 50%, 50%);
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  code {
+    display: block;
+    padding: 0.5rem;
+  }
+}
+
+code {
+  background-color: hsl(0, 0%, 0%);
+  color: hsl(0, 0%, 75%);
+}

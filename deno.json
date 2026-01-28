@@ -1,0 +1,14 @@
+{
+  "lock": false,
+  "imports": {
+    "@std/path": "jsr:@std/path@^1.1.4",
+    "@hono/hono": "jsr:@hono/hono@^4.11.5",
+    "renderer": "./main/renderer.js"
+  },
+  "fmt": {
+    "exclude": [
+      "./main/layouts",
+      "./main/templates"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+<div class="indent flex-column">
+  <p>全てのベンダーの ./cartridges 直下のディレクトリの一覧を表示しています。</p>
+  <div>
+    <i>カートリッジの一覧</i>
+    <div class="indent">
+      <ul>
+        ${renderMap("./cartridges/cartridge.html", _.cartridges, "cartridge", {vendorNames:_.vendorNames})}
+      </ul>
+    </div>
+  </div>
+</div>
