@@ -1,0 +1,82 @@
+#!/bin/sh
+set -e
+
+echo "=== 8ppoi ベンダー初回セットアップ ==="
+
+# 1️⃣ GitHubアカウント入力
+read -p "GitHubアカウント名を入力: " VENDOR_ID
+if [ -z "$VENDOR_ID" ]; then
+  echo "アカウント名が入力されていません。終了します。"
+  exit 1
+fi
+
+# 2️⃣ アカウント存在確認
+echo "GitHubアカウント確認中..."
+if ! curl -s https://api.github.com/users/$VENDOR_ID | grep -q '"login":'; then
+  echo "アカウント $VENDOR_ID は存在しません。終了します。"
+  exit 1
+fi
+echo "アカウント確認 OK ✅"
+
+# 3️⃣ リモートリポジトリ作成案内
+echo ""
+echo "次に GitHub で以下リポジトリを作成してください:"
+echo "  $VENDOR_ID/8ppoi-vendor を public リポジトリとして作成"
+echo "作成が終わったら Enter を押してください"
+read dummy
+
+# 4️⃣ ローカルディレクトリ作成と初期化
+TARGET_DIR="./vendors/$VENDOR_ID"
+mkdir -p "$TARGET_DIR"
+cd "$TARGET_DIR"
+
+# .gitignore 作成
+cat > .gitignore <<EOF
+# カートリッジのディレクトリを無視
+/cartridges
+EOF
+
+# GitHubからアバター画像を取得
+AVATAR_URL=$(curl -s https://api.github.com/users/$VENDOR_ID | grep -Po '"avatar_url": "\K[^"]+')
+if [ -n "$AVATAR_URL" ]; then
+  # 拡張子判定
+  EXT=$(curl -sI "$AVATAR_URL" | grep -i '^Content-Type:' | awk '{print $2}' | tr -d '\r' | sed 's|image/||')
+  [ -z "$EXT" ] && EXT="jpg"
+  
+  curl -sL "$AVATAR_URL" -o "avatar.$EXT"
+  echo "avatar.$EXT を GitHub から取得しました ✅"
+else
+  echo "アバターの取得に失敗しました"
+fi
+
+# avatar拡張子に合わせて meta.json 作成
+META_FILE="meta.json"
+AVATAR_FILE="avatar.$EXT"
+
+cat > "$META_FILE" <<EOF
+{
+  "name": "$VENDOR_ID",
+  "avatar": "$AVATAR_FILE",
+  "description": "私の名前は $VENDOR_ID です。"
+}
+EOF
+
+echo "meta.json を生成しました ✅"
+
+git init
+git remote add origin git@github.com:$VENDOR_ID/8ppoi-vendor.git
+
+# 5️⃣ 編集後コミット・push
+echo ""
+echo "meta.json の編集が終わったら Enter を押してください"
+read dummy
+
+git add -A
+git commit --allow-empty-message -m ""
+git push -u origin main
+
+echo ""
+echo "✅ ベンダー初期セットアップ完了"
+echo "リモート: git@github.com:$VENDOR_ID/8ppoi-vendor.git"
+echo "プロフィールページ: https://8ppoi.com/vendors/$VENDOR_ID/"
+echo "🎉 ベンダーデビューおめでとう！これであなたも公式8ppoiベンダーです ✨"
