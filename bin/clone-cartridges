@@ -34,4 +34,4 @@ for ITEM in "$@"; do
   git clone "$REPO_URL" "$DIR_NAME" >/dev/null 2>&1
 done
 
-echo "完了: 指定されたカートリッジを $TARGET_ROOT に展開しました"
+echo "完了: 指定されたカートリッジのリポジトリを clone しました"

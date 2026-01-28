@@ -22,4 +22,4 @@ for VENDOR_ID in "$@"; do
   git clone "$REPO_URL" "$DIR_NAME" >/dev/null 2>&1
 done
 
-echo "完了: 指定されたベンダーリポジトリを $TARGET_DIR に展開しました"
+echo "完了: 指定されたベンダーのリポジトリを clone しました"
