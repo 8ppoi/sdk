@@ -4,7 +4,7 @@
     <div class="indent flex-column">
       <h1>8popi SDK へようこそ！</h1>
       <div id="console">
-        <img id="artwork" style="width: 100%;" src="/vendors/8ppoi-official/cartridges/invader-x/artwork.svg">
+        <img id="artwork" style="width: 100%;" src="/vendors/8ppoi/cartridges/invader-x/artwork.svg">
       </div>
       <p>8ppoi SDKを用いると 8ppoiカートリッジの開発と、コンソール上でのカートリッジの実行が行えます。自分で開発したカートリッジだけではなく、ダウンロードしたカートリッジを実行することもできます。</p>
       <p>SDKの詳しい使い方や、ドキュメンテーションは<a href="https://8ppoi.kentasaito.deno.net/">公式サイト</a>を参照してください。</p>
@@ -14,7 +14,7 @@
 <script type="module">
   import { sanitize } from "/static/security/sanitize.js";
   import { Console } from "/consoles/1.0.0-alpha.1/Console.js";
-  import { Cartridge } from "/vendors/8ppoi-official/cartridges/invader-x/Cartridge.js";
+  import { Cartridge } from "/vendors/8ppoi/cartridges/invader-x/Cartridge.js";
 
   const retainedGlobals = sanitize();
   Console.onPower(Cartridge, { retainedGlobals });
