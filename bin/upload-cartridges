@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+cd "$(dirname "$0")/.."
+TARGET_ROOT="./vendors"
+
+# 引数チェック
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 VENDOR_ID/CARTRIDGE_ID [VENDOR_ID/CARTRIDGE_ID ...]"
+  exit 1
+fi
+
+for ITEM in "$@"; do
+  # VENDOR_ID と CARTRIDGE_ID に分割
+  VENDOR_ID="${ITEM%%/*}"
+  CARTRIDGE_ID="${ITEM##*/}"
+
+  if [ -z "$VENDOR_ID" ] || [ -z "$CARTRIDGE_ID" ]; then
+    echo "無効な形式: $ITEM"
+    continue
+  fi
+
+  REPO_URL="https://github.com/$VENDOR_ID/8ppoi-cartridge-$CARTRIDGE_ID.git"
+  DIR_NAME="$TARGET_ROOT/$VENDOR_ID/cartridges/$CARTRIDGE_ID"
+
+  if [ -d "$DIR_NAME/.git" ]; then
+    echo "アップロード: $DIR_NAME"
+    pushd $DIR_NAME
+    git add -A
+    git commit --allow-empty-message -m ""
+    git push
+    popd
+    continue
+  fi
+
+  echo "カートリッジが見つかりません"
+done
+
+echo "完了: 指定されたカートリッジのリポジトリを更新しました"

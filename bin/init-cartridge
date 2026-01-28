@@ -137,7 +137,7 @@ read dummy
 
 git add -A
 git commit --allow-empty-message -m ""
-#git push -u origin main
+git push -u origin main
 
 echo ""
 echo "✅ カートリッジ初期セットアップ完了"

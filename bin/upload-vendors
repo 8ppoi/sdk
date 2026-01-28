@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+cd "$(dirname "$0")/.."
+TARGET_DIR="./vendors"
+
+# 引数でベンダーIDを受け取る
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <vendor_id1> [vendor_id2 ...]"
+  exit 1
+fi
+
+for VENDOR_ID in "$@"; do
+  DIR_NAME="$TARGET_DIR/$VENDOR_ID"
+
+  if [ -d "$DIR_NAME/.git" ]; then
+    echo "アップロード: $DIR_NAME"
+    pushd $DIR_NAME
+    git add -A
+    git commit --allow-empty-message -m ""
+    git push
+    popd
+    continue
+  fi
+
+  echo "ベンダーが見つかりません"
+done
+
+echo "完了: 指定されたベンダーリポジトリをアップロードしました"
