@@ -1,0 +1,29 @@
+#!/bin/sh
+# ~/8ppoi/sdk/bin/ensure-consoles
+# 全タグのコンソールを ~/8ppoi/sdk/consoles に揃えるスクリプト
+
+set -e
+
+# 配置先ディレクトリ
+TARGET_DIR="./consoles"
+mkdir -p "$TARGET_DIR"
+
+# 8ppoiコンソールリポジトリURL
+REPO_URL="https://github.com/8ppoi/console.git"
+
+# 最新タグ一覧を取得
+TAGS=$(git ls-remote --tags --sort="v:refname" "$REPO_URL" | awk -F'/' '{print $3}')
+
+for TAG in $TAGS; do
+  # ディレクトリ名はタグ名そのまま
+  DIR_NAME="$TARGET_DIR/$TAG"
+  if [ -d "$DIR_NAME" ]; then
+    echo "スキップ: $DIR_NAME は既に存在"
+    continue
+  fi
+
+  echo "クローン: $TAG → $DIR_NAME"
+  git clone --depth 1 --branch "$TAG" "$REPO_URL" "$DIR_NAME" >/dev/null 2>&1
+done
+
+echo "完了: すべてのバージョンのコンソールを $TARGET_DIR に展開しました"
