@@ -10,16 +10,16 @@ if [ $# -eq 0 ]; then
 fi
 
 for VENDOR_ID in "$@"; do
-  REPO_URL="https://github.com/$VENDOR_ID/8ppoi-vendor.git"
   DIR_NAME="$TARGET_DIR/$VENDOR_ID"
 
-  if [ -d "$DIR_NAME" ]; then
-    echo "スキップ: $DIR_NAME は既に存在"
+  if [ -d "$DIR_NAME/.git" ]; then
+    echo "更新: $DIR_NAME"
+    git -C "$DIR_NAME" pull
     continue
   fi
 
   echo "クローン: $VENDOR_ID → $DIR_NAME"
-  git clone "$REPO_URL" "$DIR_NAME" >/dev/null 2>&1
+  git clone "https://github.com/$VENDOR_ID/8ppoi-vendor.git" "$DIR_NAME"
 done
 
-echo "完了: 指定されたベンダーのリポジトリを clone しました"
+echo "完了: 指定されたベンダーリポジトリを更新しました"

@@ -22,16 +22,15 @@ for ITEM in "$@"; do
   REPO_URL="https://github.com/$VENDOR_ID/8ppoi-cartridge-$CARTRIDGE_ID.git"
   DIR_NAME="$TARGET_ROOT/$VENDOR_ID/cartridges/$CARTRIDGE_ID"
 
-  if [ -d "$DIR_NAME" ]; then
-    echo "スキップ: $DIR_NAME は既に存在"
-    continue
+  # ディレクトリがあれば pull、なければ clone
+  if [ -d "$DIR_NAME/.git" ]; then
+    echo "更新: $DIR_NAME"
+    git -C "$DIR_NAME" pull
+  else
+    mkdir -p "$(dirname "$DIR_NAME")"
+    echo "クローン: $ITEM → $DIR_NAME"
+    git clone "$REPO_URL" "$DIR_NAME"
   fi
-
-  # ディレクトリ作成
-  mkdir -p "$(dirname "$DIR_NAME")"
-
-  echo "クローン: $ITEM → $DIR_NAME"
-  git clone "$REPO_URL" "$DIR_NAME" >/dev/null 2>&1
 done
 
-echo "完了: 指定されたカートリッジのリポジトリを clone しました"
+echo "完了: 指定されたカートリッジのリポジトリを更新しました"
