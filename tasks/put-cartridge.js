@@ -7,7 +7,7 @@ Gh.init(Deno.readTextFileSync("./.credentials"));
 // GitHub ユーザ情報を取得
 const user = await Gh.fetch("user");
 
-// ベンダーディレクトリを作成
+// カートリッジディレクトリを作成
 const cartridgeId = "first-cartridge";
 Deno.mkdirSync(`./vendors/${user.login}/cartridges/${cartridgeId}`, { recursive: true });
 
