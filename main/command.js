@@ -3,6 +3,9 @@ export function command(args, { cwd, quiet = false } = {}) {
   const cmd = args.shift();
   const result = new Deno.Command(cmd, {
     args,
+    env: {
+      GIT_TERMINAL_PROMPT: "0",
+    },
     stdout: "piped",
     stderr: "piped",
     cwd,

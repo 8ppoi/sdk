@@ -80,6 +80,12 @@ cartridge.get("/clone/:vendorId/:cartridgeId", (c) => {
     `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
     dir,
   ]);
+  command([
+    "git",
+    "config",
+    "credential.helper",
+    "store --file=../../../../.credentials",
+  ], { cwd: dir });
 
   return c.html("✅ リモートからローカルに clone しました");
 });
@@ -92,12 +98,6 @@ cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
 
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
-  command([
-    "git",
-    "config",
-    "credential.helper",
-    "store --file=../../../../.credentials",
-  ], { cwd: dir });
 
   return c.html("✅ リモートからローカルに pull しました");
 });
