@@ -10,17 +10,17 @@ vendor.get("/scaffold/:vendorId", async (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // .gitignore を作成
-  Deno.writeTextFileSync(`./vendors/${vendorId}/.gitignore`, "/cartridges\n");
+  Deno.writeTextFileSync(`${dir}/.gitignore`, "/cartridges\n");
 
   // アバターを GitHub から取得
   const user = await Gh.fetch(`users/${vendorId}`, { username: vendorId });
   const resp = await fetch(user.avatar_url);
   const buffer = await resp.arrayBuffer();
-  Deno.writeFileSync(`./vendors/${vendorId}/avatar`, new Uint8Array(buffer));
+  Deno.writeFileSync(`${dir}/avatar`, new Uint8Array(buffer));
 
   // meta.json を作成
   Deno.writeTextFileSync(
-    `./vendors/${vendorId}/meta.json`,
+    `${dir}/meta.json`,
     `{
     "name": "${vendorId}",
     "avatar": "avatar",
@@ -37,7 +37,7 @@ vendor.get("/init/:vendorId", (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // ベンダーディレクトリを作成
-  Deno.mkdirSync(`./vendors/${vendorId}`, { recursive: true });
+  Deno.mkdirSync(dir, { recursive: true });
 
   // ローカルリポジトリ設定
   command(["git", "init", "-b", "main"], { cwd: dir });
@@ -58,7 +58,6 @@ vendor.get("/init/:vendorId", (c) => {
 // リモートにリポジトリを作る
 vendor.get("/put/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
 
   // GitHub に POST
   await Gh.fetch("user/repos", {
@@ -84,9 +83,9 @@ vendor.get("/push/:vendorId", (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // リモートリポジトリへ push
-  //  command(["git", "add", "-A"], { cwd: dir });
+  command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  //  command(["git", "push"], { cwd: dir });
+  command(["git", "push"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
@@ -94,13 +93,14 @@ vendor.get("/push/:vendorId", (c) => {
 // リモートからローカルに clone する
 vendor.get("/clone/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
 
   // GitHub から clone
   command([
     "git",
     "clone",
     `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
-    `./vendors/${vendorId}`,
+    dir,
   ]);
 
   return c.html("✅ リモートからローカルに clone しました");
@@ -142,7 +142,7 @@ vendor.get("/remove/:vendorId", (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // ベンダーディレクトリを削除
-  Deno.removeSync(`./vendors/${vendorId}`, { recursive: true });
+  Deno.removeSync(dir, { recursive: true });
 
   return c.html("✅ ローカルのリポジトリを削除しました");
 });

@@ -1,5 +1,5 @@
 export class Gh {
-  static async init(credentials) {
+  static init(credentials) {
     this.credentials = Object.fromEntries(
       credentials
         .trim()
