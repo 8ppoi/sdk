@@ -44,24 +44,38 @@ vendor.get("/put", (c) => {
 });
 
 // ローカルからリモートに push する
-vendor.get("/push", (c) => {
-  const vendorId = Gh.user.login;
+vendor.get("/push/:vendorId", (c) => {
+  const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
 
-  return c.html(c.req.path);
+  // リモートリポジトリへ push
+  command(["git", "add", "-A"], { cwd: dir });
+  command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
+  command(["git", "push"], { cwd: dir });
+
+  return c.html("✅ ローカルからリモートに push しました");
 });
 
 // リモートからローカルに clone する
 vendor.get("/clone/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
 
-  return c.html(c.req.path + " " + vendorId);
+  // GitHub から clone
+  command(["git", "clone", `https://github.com/${vendorId}/8ppoi-vendor.git`, `./vendors/${vendorId}`]);
+
+  return c.html("✅ リモートからローカルに clone しました");
 });
 
 // リモートからローカルに pull する
 vendor.get("/pull/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
 
-  return c.html(c.req.path + " " + vendorId);
+  // GitHub から pull
+  command(["git", "pull"], { cwd: dir });
+  command(["git", "config", "credential.helper", "store --file=../../.credentials"], { cwd: dir });
+
+  return c.html("✅ リモートからローカルに pull しました");
 });
 
 // ローカルのリポジトリを削除する
