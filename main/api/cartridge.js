@@ -26,6 +26,13 @@ cartridge.get("/init/:vendorId/:cartridgeId", (c) => {
     ["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""],
     { cwd: dir },
   );
+  command([
+    "git",
+    "remote",
+    "add",
+    "origin",
+    `https://${vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
+  ], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
 });
@@ -42,19 +49,10 @@ cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
     method: "POST",
     body: { name: `8ppoi-cartridge-${cartridgeId}` },
   });
-  command([
-    "git",
-    "remote",
-    "add",
-    "origin",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
-  ], { cwd: dir });
-  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ リモートにリポジトリを作りました");
 });
 
-/*
 // ローカルからリモートに push する
 cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
@@ -64,7 +62,7 @@ cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "push"], { cwd: dir });
+  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
@@ -103,7 +101,6 @@ cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
 
   return c.html("✅ リモートからローカルに pull しました");
 });
-*/
 
 // リモートのリポジトリを削除する
 cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {

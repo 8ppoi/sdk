@@ -25,6 +25,13 @@ vendor.get("/init/:vendorId", (c) => {
     ["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""],
     { cwd: dir },
   );
+  command([
+    "git",
+    "remote",
+    "add",
+    "origin",
+    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+  ], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
 });
@@ -40,14 +47,6 @@ vendor.get("/put/:vendorId", async (c) => {
     method: "POST",
     body: { name: "8ppoi-vendor" },
   });
-  command([
-    "git",
-    "remote",
-    "add",
-    "origin",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
-  ], { cwd: dir });
-  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ リモートにリポジトリを作りました");
 });
@@ -60,7 +59,7 @@ vendor.get("/push/:vendorId", (c) => {
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "push"], { cwd: dir });
+  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
