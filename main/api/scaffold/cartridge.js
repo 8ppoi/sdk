@@ -84,5 +84,5 @@ cartridge.get("/:vendorId/:cartridgeId", async (c) => {
 `,
   );
 
-  return c.html("✅ ローカルリポジトリをスキャフォールドしました");
+  return c.html("✅ ローカルリポジトリをスキャフォールドしました\n");
 });

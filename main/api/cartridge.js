@@ -79,7 +79,7 @@ cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
   command([
     "git",
     "clone",
-    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
     dir,
   ]);
   command([
