@@ -67,9 +67,9 @@ vendor.get("/push/:vendorId", (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // リモートリポジトリへ push
-  command(["git", "add", "-A"], { cwd: dir });
+//  command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "push"], { cwd: dir });
+//  command(["git", "push"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
@@ -96,6 +96,16 @@ vendor.get("/pull/:vendorId", (c) => {
   return c.html("✅ リモートからローカルに pull しました");
 });
 
+// リモートのリポジトリを削除する
+vendor.get("/delete/:vendorId", async (c) => {
+  const vendorId = c.req.param("vendorId");
+
+  // リモートのリポジトリを削除
+  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, { username: vendorId, method: "DELETE" });
+
+  return c.html("✅ リモートのリポジトリを削除しました");
+});
+
 // ローカルのリポジトリを削除する
 vendor.get("/remove/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
@@ -105,14 +115,4 @@ vendor.get("/remove/:vendorId", (c) => {
   Deno.removeSync(`./vendors/${vendorId}`, { recursive: true });
 
   return c.html("✅ ローカルのリポジトリを削除しました");
-});
-
-// リモートのリポジトリを削除する
-vendor.get("/delete/:vendorId", async (c) => {
-  const vendorId = c.req.param("vendorId");
-
-  // リモートのリポジトリを削除
-  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, { username: vendorId, method: "DELETE" });
-
-  return c.html("✅ リモートのリポジトリを削除しました");
 });
