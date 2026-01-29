@@ -1,15 +1,21 @@
 export class Gh {
-  static async init(credential) {
-    const url = new URL(credential);
-    this.pat   = url.password;
-    this.user = await Gh.fetch("user");
+  static async init(credentials) {
+    this.credentials = Object.fromEntries(
+      credentials
+        .trim()
+        .split("\n")
+        .map((credential) => {
+          const url = new URL(credential);
+          return [url.username, url];
+        }),
+    );
   }
 
-  static async fetch(command, method = "GET", body) {
+  static async fetch(command, { username, method = "GET", body } = {}) {
     const resp = await fetch(`https://api.github.com/${command}`, {
       method,
       headers: {
-        "Authorization": `token ${this.pat}`,
+        "Authorization": `token ${this.credentials[username].password}`,
         "Accept": "application/vnd.github+json",
         ...(body ? { "Content-Type": "application/json" } : {}),
       },

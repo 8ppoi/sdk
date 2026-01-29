@@ -5,8 +5,8 @@ import { command } from "../command.js";
 export const vendor = new Hono();
 
 // ローカルにリポジトリを作る
-vendor.get("/init", async (c) => {
-  const vendorId = Gh.user.login;
+vendor.get("/init/:vendorId", async (c) => {
+  const vendorId = c.req.param("vendorId");
   const dir = `./vendors/${vendorId}`;
 
   // ベンダーディレクトリを作成
@@ -16,7 +16,8 @@ vendor.get("/init", async (c) => {
   Deno.writeTextFileSync(`./vendors/${vendorId}/.gitignore`, "/cartridges\n");
 
   // アバターを GitHub から取得
-  const resp = await fetch(Gh.user.avatar_url);
+  const user = await Gh.fetch(`users/${vendorId}`, { username: vendorId });
+  const resp = await fetch(user.avatar_url);
   const buffer = await resp.arrayBuffer();
   Deno.writeFileSync(`./vendors/${vendorId}/avatar`, new Uint8Array(buffer));
 
@@ -29,7 +30,7 @@ vendor.get("/init", async (c) => {
 
   // ローカルリポジトリ設定
   command(["git", "init"], { cwd: dir });
-  command(["git", "remote", "add", "origin", `https://github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
+  command(["git", "remote", "add", "origin", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
   command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
 
@@ -37,8 +38,8 @@ vendor.get("/init", async (c) => {
 });
 
 // リモートにリポジトリを作る
-vendor.get("/put", (c) => {
-  const vendorId = Gh.user.login;
+vendor.get("/put/:vendorId", (c) => {
+  const vendorId = c.req.param("vendorId");
 
   return c.html(c.req.path);
 });
@@ -61,7 +62,7 @@ vendor.get("/clone/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
 
   // GitHub から clone
-  command(["git", "clone", `https://github.com/${vendorId}/8ppoi-vendor.git`, `./vendors/${vendorId}`]);
+  command(["git", "clone", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`, `./vendors/${vendorId}`]);
 
   return c.html("✅ リモートからローカルに clone しました");
 });
@@ -90,8 +91,8 @@ vendor.get("/remove/:vendorId", (c) => {
 });
 
 // リモートのリポジトリを削除する
-vendor.get("/delete", (c) => {
-  const vendorId = Gh.user.login;
+vendor.get("/delete/:vendorId", (c) => {
+  const vendorId = c.req.param("vendorId");
 
   return c.html(c.req.path);
 });
