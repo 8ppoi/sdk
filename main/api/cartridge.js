@@ -3,12 +3,13 @@ import { Hono } from "@hono/hono";
 import { Gh } from "../Gh.js";
 import { command } from "../command.js";
 
-export const vendor = new Hono();
+export const cartridge = new Hono();
 
 // ローカルにリポジトリを作る
-vendor.get("/init/:vendorId", (c) => {
+cartridge.get("/init/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // ディレクトリを作成
   Deno.mkdirSync(dir, { recursive: true });
@@ -19,7 +20,7 @@ vendor.get("/init/:vendorId", (c) => {
     "git",
     "config",
     "credential.helper",
-    "store --file=../../.credentials",
+    "store --file=../../../../.credentials",
   ], { cwd: dir });
   command(
     ["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""],
@@ -30,32 +31,35 @@ vendor.get("/init/:vendorId", (c) => {
 });
 
 // リモートにリポジトリを作る
-vendor.get("/put/:vendorId", async (c) => {
+cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // GitHub に POST
   await Gh.fetch("user/repos", {
     username: vendorId,
     method: "POST",
-    body: { name: "8ppoi-vendor" },
+    body: { name: `8ppoi-cartridge-${cartridgeId}` },
   });
   command([
     "git",
     "remote",
     "add",
     "origin",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `https://${vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
   ], { cwd: dir });
   command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ リモートにリポジトリを作りました");
 });
 
+/*
 // ローカルからリモートに push する
-vendor.get("/push/:vendorId", (c) => {
+cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
@@ -66,9 +70,10 @@ vendor.get("/push/:vendorId", (c) => {
 });
 
 // リモートからローカルに clone する
-vendor.get("/clone/:vendorId", (c) => {
+cartridge.get("/clone/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // GitHub から clone
   command([
@@ -82,9 +87,10 @@ vendor.get("/clone/:vendorId", (c) => {
 });
 
 // リモートからローカルに pull する
-vendor.get("/pull/:vendorId", (c) => {
+cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
@@ -92,18 +98,21 @@ vendor.get("/pull/:vendorId", (c) => {
     "git",
     "config",
     "credential.helper",
-    "store --file=../../.credentials",
+    "store --file=../../../../.credentials",
   ], { cwd: dir });
 
   return c.html("✅ リモートからローカルに pull しました");
 });
+*/
 
 // リモートのリポジトリを削除する
-vendor.get("/delete/:vendorId", async (c) => {
+cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // リモートのリポジトリを削除
-  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, {
+  await Gh.fetch(`repos/${vendorId}/8ppoi-cartridge-${cartridgeId}`, {
     username: vendorId,
     method: "DELETE",
   });
@@ -112,9 +121,10 @@ vendor.get("/delete/:vendorId", async (c) => {
 });
 
 // ローカルのリポジトリを削除する
-vendor.get("/remove/:vendorId", (c) => {
+cartridge.get("/remove/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // ディレクトリを削除
   Deno.removeSync(dir, { recursive: true });
@@ -127,10 +137,12 @@ vendor.get("/remove/:vendorId", (c) => {
   return c.html("✅ ローカルのリポジトリを削除しました");
 });
 
+/*
 // ローカルリポジトリをスキャフォールドする
-vendor.get("/scaffold/:vendorId", async (c) => {
+cartridge.get("/scaffold/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const cartridgeId = c.req.param("cartridgeId");
+  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // .gitignore を作成
   Deno.writeTextFileSync(`${dir}/.gitignore`, "/cartridges\n");
@@ -153,3 +165,4 @@ vendor.get("/scaffold/:vendorId", async (c) => {
 
   return c.html("✅ ローカルリポジトリをスキャフォールドしました");
 });
+*/
