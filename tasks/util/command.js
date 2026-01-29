@@ -10,7 +10,9 @@ export function command(args, quiet = false) {
     const err = textDecoder.decode(result.stderr);
     throw new Error(err);
   }
-  const output = (textDecoder.decode(result.stdout) + textDecoder.decode(result.stderr)).trim();
+  const output =
+    (textDecoder.decode(result.stdout) + textDecoder.decode(result.stderr))
+      .trim();
   if (!quiet && output !== "") {
     console.log(output);
   }

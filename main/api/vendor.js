@@ -19,11 +19,14 @@ vendor.get("/scaffold/:vendorId", async (c) => {
   Deno.writeFileSync(`./vendors/${vendorId}/avatar`, new Uint8Array(buffer));
 
   // meta.json を作成
-  Deno.writeTextFileSync(`./vendors/${vendorId}/meta.json`, `{
+  Deno.writeTextFileSync(
+    `./vendors/${vendorId}/meta.json`,
+    `{
     "name": "${vendorId}",
     "avatar": "avatar",
     "description": "私の名前は ${vendorId} です。"
-  }`);
+  }`,
+  );
 
   return c.html("✅ ローカルリポジトリをスキャフォールドしました");
 });
@@ -38,8 +41,16 @@ vendor.get("/init/:vendorId", (c) => {
 
   // ローカルリポジトリ設定
   command(["git", "init", "-b", "main"], { cwd: dir });
-  command(["git", "config", "credential.helper", "store --file=../../.credentials"], { cwd: dir });
-  command(["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""], { cwd: dir });
+  command([
+    "git",
+    "config",
+    "credential.helper",
+    "store --file=../../.credentials",
+  ], { cwd: dir });
+  command(
+    ["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""],
+    { cwd: dir },
+  );
 
   return c.html("✅ ローカルにリポジトリを作りました");
 });
@@ -55,7 +66,13 @@ vendor.get("/put/:vendorId", async (c) => {
     method: "POST",
     body: { name: "8ppoi-vendor" },
   });
-  command(["git", "remote", "add", "origin", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
+  command([
+    "git",
+    "remote",
+    "add",
+    "origin",
+    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+  ], { cwd: dir });
   command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ リモートにリポジトリを作りました");
@@ -67,9 +84,9 @@ vendor.get("/push/:vendorId", (c) => {
   const dir = `./vendors/${vendorId}`;
 
   // リモートリポジトリへ push
-//  command(["git", "add", "-A"], { cwd: dir });
+  //  command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-//  command(["git", "push"], { cwd: dir });
+  //  command(["git", "push"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
@@ -79,7 +96,12 @@ vendor.get("/clone/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
 
   // GitHub から clone
-  command(["git", "clone", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`, `./vendors/${vendorId}`]);
+  command([
+    "git",
+    "clone",
+    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `./vendors/${vendorId}`,
+  ]);
 
   return c.html("✅ リモートからローカルに clone しました");
 });
@@ -91,7 +113,12 @@ vendor.get("/pull/:vendorId", (c) => {
 
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
-  command(["git", "config", "credential.helper", "store --file=../../.credentials"], { cwd: dir });
+  command([
+    "git",
+    "config",
+    "credential.helper",
+    "store --file=../../.credentials",
+  ], { cwd: dir });
 
   return c.html("✅ リモートからローカルに pull しました");
 });
@@ -101,7 +128,10 @@ vendor.get("/delete/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
 
   // リモートのリポジトリを削除
-  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, { username: vendorId, method: "DELETE" });
+  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, {
+    username: vendorId,
+    method: "DELETE",
+  });
 
   return c.html("✅ リモートのリポジトリを削除しました");
 });

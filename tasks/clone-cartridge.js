@@ -5,8 +5,8 @@ const cartridgeId = Deno.args[1];
 
 // GitHub から clone
 command([
-  "git", 
-  "clone", 
-  `https://github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`, 
-  `./vendors/${vendorId}/cartridges/${cartridgeId}`
+  "git",
+  "clone",
+  `https://github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
+  `./vendors/${vendorId}/cartridges/${cartridgeId}`,
 ]);

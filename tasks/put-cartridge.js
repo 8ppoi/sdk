@@ -5,6 +5,13 @@ import { command } from "./util/command.js";
 Gh.init(Deno.readTextFileSync("./.credentials"));
 
 // GitHub にプッシュ
-await Gh.fetch("user/repos", "POST", { name: `8ppoi-cartridge-${cartridgeId}` });
-command(["git", "config", "credential.helper", "store --file=../../../../.credentials"]);
+await Gh.fetch("user/repos", "POST", {
+  name: `8ppoi-cartridge-${cartridgeId}`,
+});
+command([
+  "git",
+  "config",
+  "credential.helper",
+  "store --file=../../../../.credentials",
+]);
 command(["git", "push", "-u", "origin", "main"]);

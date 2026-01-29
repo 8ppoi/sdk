@@ -2,7 +2,7 @@ export class Gh {
   static init(credential) {
     const url = new URL(credential);
     this.login = url.username;
-    this.pat   = url.password;
+    this.pat = url.password;
   }
 
   static async fetch(command, method = "GET", body) {

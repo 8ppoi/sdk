@@ -9,23 +9,33 @@ const user = await Gh.fetch("user");
 
 // カートリッジディレクトリを作成
 const cartridgeId = "first-cartridge";
-Deno.mkdirSync(`./vendors/${user.login}/cartridges/${cartridgeId}`, { recursive: true });
+Deno.mkdirSync(`./vendors/${user.login}/cartridges/${cartridgeId}`, {
+  recursive: true,
+});
 
 // アバターをGitHubから取得
 const resp = await fetch(user.avatar_url);
 const buffer = await resp.arrayBuffer();
-Deno.writeFileSync(`./vendors/${user.login}/cartridges/${cartridgeId}/artwork`, new Uint8Array(buffer));
+Deno.writeFileSync(
+  `./vendors/${user.login}/cartridges/${cartridgeId}/artwork`,
+  new Uint8Array(buffer),
+);
 
 // meta.jsonを作成
-Deno.writeTextFileSync(`./vendors/${user.login}/cartridges/${cartridgeId}/meta.json`, `{
+Deno.writeTextFileSync(
+  `./vendors/${user.login}/cartridges/${cartridgeId}/meta.json`,
+  `{
   "consoleVersion": "1.0.0-alpha.1",
   "name": "${cartridgeId}",
   "artwork": "artwork",
   "description": "B0（キーボードではZ）とB1（キーボードではX）を押すと、色の付いた文字が踊ります🎵"
-}`);
+}`,
+);
 
 // Cartridge.js 作成
-Deno.writeTextFileSync(`./vendors/${user.login}/cartridges/${cartridgeId}/Cartridge.js`, `export class Cartridge {
+Deno.writeTextFileSync(
+  `./vendors/${user.login}/cartridges/${cartridgeId}/Cartridge.js`,
+  `export class Cartridge {
   static onReset({ pads, speakers, screens }) {
     this.pads = pads;
     this.speakers = speakers;
@@ -77,11 +87,18 @@ Deno.writeTextFileSync(`./vendors/${user.login}/cartridges/${cartridgeId}/Cartri
     this.msg1.y = Math.min(this.msg1.y, 40);
   }
 }
-`);
+`,
+);
 
 // ローカルリポジトリ設定
 Deno.chdir(`./vendors/${user.login}/cartridges/${cartridgeId}`);
 command(["git", "init"]);
-command(["git", "remote", "add", "origin", `https://github.com/${user.login}/8ppoi-cartridge-${cartridgeId}.git`]);
+command([
+  "git",
+  "remote",
+  "add",
+  "origin",
+  `https://github.com/${user.login}/8ppoi-cartridge-${cartridgeId}.git`,
+]);
 command(["git", "add", "-A"]);
 command(["git", "commit", "--allow-empty-message", "-m", ""]);

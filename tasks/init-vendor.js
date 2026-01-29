@@ -19,15 +19,24 @@ const buffer = await resp.arrayBuffer();
 Deno.writeFileSync(`./vendors/${user.login}/avatar`, new Uint8Array(buffer));
 
 // meta.jsonを作成
-Deno.writeTextFileSync(`./vendors/${user.login}/meta.json`, `{
+Deno.writeTextFileSync(
+  `./vendors/${user.login}/meta.json`,
+  `{
   "name": "${user.login}",
   "avatar": "avatar",
   "description": "私の名前は ${user.login} です。"
-}`);
+}`,
+);
 
 // ローカルリポジトリ設定
 Deno.chdir(`./vendors/${user.login}`);
 command(["git", "init"]);
-command(["git", "remote", "add", "origin", `https://github.com/${user.login}/8ppoi-vendor.git`]);
+command([
+  "git",
+  "remote",
+  "add",
+  "origin",
+  `https://github.com/${user.login}/8ppoi-vendor.git`,
+]);
 command(["git", "add", "-A"]);
 command(["git", "commit", "--allow-empty-message", "-m", ""]);
