@@ -6,8 +6,9 @@ import { command } from "../command.js";
 export const vendor = new Hono();
 
 // ローカルにリポジトリを作る
-vendor.get("/init/:vendorId", (c) => {
+vendor.get("/init/:vendorId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
+  const username = c.req.param("username");
   const dir = `./vendors/${vendorId}`;
 
   // ディレクトリを作成
@@ -30,7 +31,7 @@ vendor.get("/init/:vendorId", (c) => {
     "remote",
     "add",
     "origin",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
   ], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
@@ -65,15 +66,16 @@ vendor.get("/push/:vendorId", (c) => {
 });
 
 // リモートからローカルに clone する
-vendor.get("/clone/:vendorId", (c) => {
+vendor.get("/clone/:vendorId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
+  const username = c.req.param("username");
   const dir = `./vendors/${vendorId}`;
 
   // GitHub から clone
   command([
     "git",
     "clone",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
     dir,
   ]);
   command([

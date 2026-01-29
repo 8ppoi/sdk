@@ -6,9 +6,10 @@ import { command } from "../command.js";
 export const cartridge = new Hono();
 
 // ローカルにリポジトリを作る
-cartridge.get("/init/:vendorId/:cartridgeId", (c) => {
+cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
+  const username = c.req.param("username");
   const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // ディレクトリを作成
@@ -31,7 +32,7 @@ cartridge.get("/init/:vendorId/:cartridgeId", (c) => {
     "remote",
     "add",
     "origin",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
+    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
   ], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
@@ -68,16 +69,17 @@ cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
 });
 
 // リモートからローカルに clone する
-cartridge.get("/clone/:vendorId/:cartridgeId", (c) => {
+cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
+  const username = c.req.param("username");
   const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // GitHub から clone
   command([
     "git",
     "clone",
-    `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
+    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
     dir,
   ]);
   command([
