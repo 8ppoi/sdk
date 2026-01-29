@@ -34,7 +34,7 @@ vendor.get("/init/:vendorId/:username?", (c) => {
     `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-vendor.git`,
   ], { cwd: dir });
 
-  return c.html("✅ ローカルにリポジトリを作りました");
+  return c.html("✅ ローカルにリポジトリを作りました\n");
 });
 
 // リモートにリポジトリを作る
@@ -49,7 +49,7 @@ vendor.get("/put/:vendorId", async (c) => {
     body: { name: "8ppoi-vendor" },
   });
 
-  return c.html("✅ リモートにリポジトリを作りました");
+  return c.html("✅ リモートにリポジトリを作りました\n");
 });
 
 // ローカルからリモートに push する
@@ -62,7 +62,7 @@ vendor.get("/push/:vendorId", (c) => {
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
   command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
-  return c.html("✅ ローカルからリモートに push しました");
+  return c.html("✅ ローカルからリモートに push しました\n");
 });
 
 // リモートからローカルに clone する
@@ -85,7 +85,7 @@ vendor.get("/clone/:vendorId/:username?", (c) => {
     "store --file=../../.credentials",
   ], { cwd: dir });
 
-  return c.html("✅ リモートからローカルに clone しました");
+  return c.html("✅ リモートからローカルに clone しました\n");
 });
 
 // リモートからローカルに pull する
@@ -96,7 +96,7 @@ vendor.get("/pull/:vendorId", (c) => {
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
 
-  return c.html("✅ リモートからローカルに pull しました");
+  return c.html("✅ リモートからローカルに pull しました\n");
 });
 
 // リモートのリポジトリを削除する
@@ -109,7 +109,7 @@ vendor.get("/delete/:vendorId", async (c) => {
     method: "DELETE",
   });
 
-  return c.html("✅ リモートのリポジトリを削除しました");
+  return c.html("✅ リモートのリポジトリを削除しました\n");
 });
 
 // ローカルのリポジトリを削除する
@@ -125,32 +125,5 @@ vendor.get("/remove/:vendorId", (c) => {
     //
   }
 
-  return c.html("✅ ローカルのリポジトリを削除しました");
-});
-
-// ローカルリポジトリをスキャフォールドする
-vendor.get("/scaffold/:vendorId", async (c) => {
-  const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
-
-  // .gitignore を作成
-  Deno.writeTextFileSync(`${dir}/.gitignore`, "/cartridges\n");
-
-  // アバターを GitHub から取得
-  const user = await Gh.fetch(`users/${vendorId}`, { username: vendorId });
-  const resp = await fetch(user.avatar_url);
-  const buffer = await resp.arrayBuffer();
-  Deno.writeFileSync(`${dir}/avatar`, new Uint8Array(buffer));
-
-  // meta.json を作成
-  Deno.writeTextFileSync(
-    `${dir}/meta.json`,
-    `{
-    "name": "${vendorId}",
-    "avatar": "avatar",
-    "description": "私の名前は ${vendorId} です。"
-  }`,
-  );
-
-  return c.html("✅ ローカルリポジトリをスキャフォールドしました");
+  return c.html("✅ ローカルのリポジトリを削除しました\n");
 });

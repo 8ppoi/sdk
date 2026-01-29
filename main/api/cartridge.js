@@ -35,7 +35,7 @@ cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
     `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
   ], { cwd: dir });
 
-  return c.html("✅ ローカルにリポジトリを作りました");
+  return c.html("✅ ローカルにリポジトリを作りました\n");
 });
 
 // リモートにリポジトリを作る
@@ -51,7 +51,7 @@ cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
     body: { name: `8ppoi-cartridge-${cartridgeId}` },
   });
 
-  return c.html("✅ リモートにリポジトリを作りました");
+  return c.html("✅ リモートにリポジトリを作りました\n");
 });
 
 // ローカルからリモートに push する
@@ -65,7 +65,7 @@ cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
   command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
-  return c.html("✅ ローカルからリモートに push しました");
+  return c.html("✅ ローカルからリモートに push しました\n");
 });
 
 // リモートからローカルに clone する
@@ -89,7 +89,7 @@ cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
     "store --file=../../../../.credentials",
   ], { cwd: dir });
 
-  return c.html("✅ リモートからローカルに clone しました");
+  return c.html("✅ リモートからローカルに clone しました\n");
 });
 
 // リモートからローカルに pull する
@@ -101,7 +101,7 @@ cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
 
-  return c.html("✅ リモートからローカルに pull しました");
+  return c.html("✅ リモートからローカルに pull しました\n");
 });
 
 // リモートのリポジトリを削除する
@@ -116,7 +116,7 @@ cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {
     method: "DELETE",
   });
 
-  return c.html("✅ リモートのリポジトリを削除しました");
+  return c.html("✅ リモートのリポジトリを削除しました\n");
 });
 
 // ローカルのリポジトリを削除する
@@ -133,35 +133,5 @@ cartridge.get("/remove/:vendorId/:cartridgeId", (c) => {
     //
   }
 
-  return c.html("✅ ローカルのリポジトリを削除しました");
+  return c.html("✅ ローカルのリポジトリを削除しました\n");
 });
-
-/*
-// ローカルリポジトリをスキャフォールドする
-cartridge.get("/scaffold/:vendorId/:cartridgeId", async (c) => {
-  const vendorId = c.req.param("vendorId");
-  const cartridgeId = c.req.param("cartridgeId");
-  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
-
-  // .gitignore を作成
-  Deno.writeTextFileSync(`${dir}/.gitignore`, "/cartridges\n");
-
-  // アバターを GitHub から取得
-  const user = await Gh.fetch(`users/${vendorId}`, { username: vendorId });
-  const resp = await fetch(user.avatar_url);
-  const buffer = await resp.arrayBuffer();
-  Deno.writeFileSync(`${dir}/avatar`, new Uint8Array(buffer));
-
-  // meta.json を作成
-  Deno.writeTextFileSync(
-    `${dir}/meta.json`,
-    `{
-    "name": "${vendorId}",
-    "avatar": "avatar",
-    "description": "私の名前は ${vendorId} です。"
-  }`,
-  );
-
-  return c.html("✅ ローカルリポジトリをスキャフォールドしました");
-});
-*/
