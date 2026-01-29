@@ -58,6 +58,7 @@ vendor.get("/init/:vendorId", (c) => {
 // リモートにリポジトリを作る
 vendor.get("/put/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
 
   // GitHub に POST
   await Gh.fetch("user/repos", {
