@@ -3,8 +3,8 @@ import { serveStatic } from "@hono/hono/deno";
 import { render } from "renderer";
 import { vendors } from "./main/vendors.js";
 import { cartridges } from "./main/cartridges.js";
-import { api } from "./main/api.js";
 import { Gh } from "./main/Gh.js";
+import { api } from "./main/api.js";
 
 await Gh.init(Deno.readTextFileSync("./.credentials"));
 
