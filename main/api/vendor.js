@@ -41,6 +41,14 @@ vendor.get("/init/:vendorId", async (c) => {
 vendor.get("/put/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
 
+// GitHub にプッシュ
+await Gh.fetch("user/repos", "POST", {
+  username: vendorId,
+  body: { name: "8ppoi-vendor" },
+});
+command(["git", "config", "credential.helper", "store --file=../../.credentials"]);
+command(["git", "push", "-u", "origin", "main"]);
+
   return c.html(c.req.path);
 });
 
