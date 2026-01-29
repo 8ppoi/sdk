@@ -29,7 +29,7 @@ vendor.get("/scaffold/:vendorId", async (c) => {
 });
 
 // ローカルにリポジトリを作る
-vendor.get("/init/:vendorId", async (c) => {
+vendor.get("/init/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
   const dir = `./vendors/${vendorId}`;
 
@@ -37,28 +37,28 @@ vendor.get("/init/:vendorId", async (c) => {
   Deno.mkdirSync(`./vendors/${vendorId}`, { recursive: true });
 
   // ローカルリポジトリ設定
-  command(["git", "init"], { cwd: dir });
+  command(["git", "init", "-b", "main"], { cwd: dir });
   command(["git", "config", "credential.helper", "store --file=../../.credentials"], { cwd: dir });
-  command(["git", "remote", "add", "origin", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
   command(["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "branch", "--set-upstream-to=origin/main"], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
 });
 
 // リモートにリポジトリを作る
-vendor.get("/put/:vendorId", (c) => {
+vendor.get("/put/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
 
-// GitHub に POST
-await Gh.fetch("user/repos", "POST", {
-  username: vendorId,
-  body: { name: "8ppoi-vendor" },
-});
-command(["git", "config", "credential.helper", "store --file=../../.credentials"]);
-command(["git", "push", "-u", "origin", "main"]);
+  // GitHub に POST
+  await Gh.fetch("user/repos", {
+    username: vendorId,
+    method: "POST",
+    body: { name: "8ppoi-vendor" },
+  });
+  command(["git", "remote", "add", "origin", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
+  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
-  return c.html(c.req.path);
+  return c.html("✅ リモートにリポジトリを作りました");
 });
 
 // ローカルからリモートに push する
@@ -69,7 +69,7 @@ vendor.get("/push/:vendorId", (c) => {
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
+  command(["git", "push"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
@@ -108,8 +108,11 @@ vendor.get("/remove/:vendorId", (c) => {
 });
 
 // リモートのリポジトリを削除する
-vendor.get("/delete/:vendorId", (c) => {
+vendor.get("/delete/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
 
-  return c.html(c.req.path);
+  // リモートのリポジトリを削除
+  await Gh.fetch(`repos/${vendorId}/8ppoi-vendor`, { username: vendorId, method: "DELETE" });
+
+  return c.html("✅ リモートのリポジトリを削除しました");
 });

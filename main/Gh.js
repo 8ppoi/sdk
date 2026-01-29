@@ -12,6 +12,16 @@ export class Gh {
   }
 
   static async fetch(command, { username, method = "GET", body } = {}) {
+console.log(
+this.credentials
+);
+console.log(
+username
+);
+console.log(
+this.credentials[username]
+);
+
     const resp = await fetch(`https://api.github.com/${command}`, {
       method,
       headers: {
