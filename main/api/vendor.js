@@ -4,13 +4,10 @@ import { command } from "../command.js";
 
 export const vendor = new Hono();
 
-// ローカルにリポジトリを作る
-vendor.get("/init/:vendorId", async (c) => {
+// ローカルリポジトリをスキャフォールドする
+vendor.get("/scaffold/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
   const dir = `./vendors/${vendorId}`;
-
-  // ベンダーディレクトリを作成
-  Deno.mkdirSync(`./vendors/${vendorId}`, { recursive: true });
 
   // .gitignore を作成
   Deno.writeTextFileSync(`./vendors/${vendorId}/.gitignore`, "/cartridges\n");
@@ -28,11 +25,23 @@ vendor.get("/init/:vendorId", async (c) => {
     "description": "私の名前は ${vendorId} です。"
   }`);
 
+  return c.html("✅ ローカルリポジトリをスキャフォールドしました");
+});
+
+// ローカルにリポジトリを作る
+vendor.get("/init/:vendorId", async (c) => {
+  const vendorId = c.req.param("vendorId");
+  const dir = `./vendors/${vendorId}`;
+
+  // ベンダーディレクトリを作成
+  Deno.mkdirSync(`./vendors/${vendorId}`, { recursive: true });
+
   // ローカルリポジトリ設定
   command(["git", "init"], { cwd: dir });
+  command(["git", "config", "credential.helper", "store --file=../../.credentials"], { cwd: dir });
   command(["git", "remote", "add", "origin", `https://${vendorId}@github.com/${vendorId}/8ppoi-vendor.git`], { cwd: dir });
-  command(["git", "add", "-A"], { cwd: dir });
-  command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
+  command(["git", "commit", "--allow-empty", "--allow-empty-message", "-m", ""], { cwd: dir });
+  command(["git", "branch", "--set-upstream-to=origin/main"], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました");
 });
@@ -41,7 +50,7 @@ vendor.get("/init/:vendorId", async (c) => {
 vendor.get("/put/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
 
-// GitHub にプッシュ
+// GitHub に POST
 await Gh.fetch("user/repos", "POST", {
   username: vendorId,
   body: { name: "8ppoi-vendor" },
@@ -60,7 +69,7 @@ vendor.get("/push/:vendorId", (c) => {
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
   command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
-  command(["git", "push"], { cwd: dir });
+  command(["git", "push", "-u", "origin", "main"], { cwd: dir });
 
   return c.html("✅ ローカルからリモートに push しました");
 });
