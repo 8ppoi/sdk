@@ -1,8 +1,11 @@
+import { dirname } from "@std/path";
 import { command } from "../../command.js";
+
+const currentFileDir = dirname(new URL(import.meta.url).pathname);
 
 // 全タグを展開（既存ディレクトリはスキップ）
 export function expandAllTags() {
-  const baseDir = "consoles";
+  const baseDir = `${currentFileDir}/../../../consoles`;
   const mainDir = `${baseDir}/main`;
 
   const results = [];
@@ -16,7 +19,7 @@ export function expandAllTags() {
 
     try {
       Deno.statSync(targetDir);
-      results.push(`✅ スキップ： ${targetDir}は存在します\n`);
+      results.push(`✅ スキップ： ${tag}は存在します\n`);
       continue; // あればスキップ
     } catch {
       // 無ければ作る
@@ -26,7 +29,7 @@ export function expandAllTags() {
     command(["sh", "-c", `git archive ${tag} | tar -x -C ../${tag}`], {
       cwd: mainDir,
     });
-    results.push(`✅ 展開： ${targetDir}を展開しました\n`);
+    results.push(`✅ 展開： ${tag}を展開しました\n`);
   }
   return results.join("");
 }

@@ -1,14 +1,14 @@
 import { dirname } from "@std/path";
 import { Hono } from "@hono/hono";
 import { command } from "../command.js";
-import { expandAllTags } from "./console/expandAllTags.js";
+import { expandAllTags } from "./consoles/expandAllTags.js";
 
 const currentFileDir = dirname(new URL(import.meta.url).pathname);
 
-export const console = new Hono();
+export const consoles = new Hono();
 
 // リモートからローカルに clone する
-console.get("/clone", (c) => {
+consoles.get("/clone", (c) => {
   const dir = `${currentFileDir}/../../consoles/main`;
 
   const results = [];
@@ -27,7 +27,7 @@ console.get("/clone", (c) => {
 });
 
 // リモートからローカルに pull する
-console.get("/pull", (c) => {
+consoles.get("/pull", (c) => {
   const dir = `${currentFileDir}/../../consoles/main`;
 
   const results = [];
