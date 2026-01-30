@@ -7,9 +7,13 @@ export function expandAllTags() {
 
   const results = [];
 
+console.log("// tag 一覧取得");
+
   // tag 一覧取得
   const output = command(["git", "tag"], { cwd: mainDir });
   const tags = output.trim().split("\n").filter(Boolean);
+
+console.log("// tag 一覧取得の後");
 
   for (const tag of tags) {
     const targetDir = `${baseDir}/${tag}`;
