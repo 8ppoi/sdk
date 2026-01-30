@@ -6,6 +6,8 @@ export const console = new Hono();
 
 // リモートからローカルに clone する
 console.get("/clone", (c) => {
+  const dir = "./consoles/main";
+
   // GitHub から clone
   command([
     "git",
