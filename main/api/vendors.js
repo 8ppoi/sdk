@@ -3,13 +3,15 @@ import { Hono } from "@hono/hono";
 import { Gh } from "../Gh.js";
 import { command } from "../command.js";
 
-export const vendor = new Hono();
+const currentFileDir = dirname(new URL(import.meta.url).pathname);
+
+export const vendors = new Hono();
 
 // ローカルにリポジトリを作る
-vendor.get("/init/:vendorId/:username?", (c) => {
+vendors.get("/init/:vendorId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const username = c.req.param("username");
-  const dir = `./vendors/${vendorId}`;
+  const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
   // ディレクトリを作成
   Deno.mkdirSync(dir, { recursive: true });
@@ -38,7 +40,7 @@ vendor.get("/init/:vendorId/:username?", (c) => {
 });
 
 // リモートにリポジトリを作る
-vendor.get("/put/:vendorId", async (c) => {
+vendors.get("/put/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
 
   // GitHub に POST
@@ -52,9 +54,9 @@ vendor.get("/put/:vendorId", async (c) => {
 });
 
 // ローカルからリモートに push する
-vendor.get("/push/:vendorId", (c) => {
+vendors.get("/push/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
   // リモートリポジトリへ push
   command(["git", "add", "-A"], { cwd: dir });
@@ -65,10 +67,10 @@ vendor.get("/push/:vendorId", (c) => {
 });
 
 // リモートからローカルに clone する
-vendor.get("/clone/:vendorId/:username?", (c) => {
+vendors.get("/clone/:vendorId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const username = c.req.param("username");
-  const dir = `./vendors/${vendorId}`;
+  const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
   // GitHub から clone
   command([
@@ -88,9 +90,9 @@ vendor.get("/clone/:vendorId/:username?", (c) => {
 });
 
 // リモートからローカルに pull する
-vendor.get("/pull/:vendorId", (c) => {
+vendors.get("/pull/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
@@ -99,7 +101,7 @@ vendor.get("/pull/:vendorId", (c) => {
 });
 
 // リモートのリポジトリを削除する
-vendor.get("/delete/:vendorId", async (c) => {
+vendors.get("/delete/:vendorId", async (c) => {
   const vendorId = c.req.param("vendorId");
 
   // リモートのリポジトリを削除
@@ -112,9 +114,9 @@ vendor.get("/delete/:vendorId", async (c) => {
 });
 
 // ローカルのリポジトリを削除する
-vendor.get("/remove/:vendorId", (c) => {
+vendors.get("/remove/:vendorId", (c) => {
   const vendorId = c.req.param("vendorId");
-  const dir = `./vendors/${vendorId}`;
+  const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
   // ディレクトリを削除
   Deno.removeSync(dir, { recursive: true });

@@ -3,10 +3,12 @@ import { Hono } from "@hono/hono";
 import { Gh } from "../Gh.js";
 import { command } from "../command.js";
 
-export const cartridge = new Hono();
+const currentFileDir = dirname(new URL(import.meta.url).pathname);
+
+export const cartridges = new Hono();
 
 // ローカルにリポジトリを作る
-cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
+cartridges.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
   const username = c.req.param("username");
@@ -41,7 +43,7 @@ cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
 });
 
 // リモートにリポジトリを作る
-cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
+cartridges.get("/put/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
 
@@ -56,7 +58,7 @@ cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
 });
 
 // ローカルからリモートに push する
-cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
+cartridges.get("/push/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
   const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
@@ -70,7 +72,7 @@ cartridge.get("/push/:vendorId/:cartridgeId", (c) => {
 });
 
 // リモートからローカルに clone する
-cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
+cartridges.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
   const username = c.req.param("username");
@@ -96,7 +98,7 @@ cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
 });
 
 // リモートからローカルに pull する
-cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
+cartridges.get("/pull/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
   const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
@@ -108,7 +110,7 @@ cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
 });
 
 // リモートのリポジトリを削除する
-cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {
+cartridges.get("/delete/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
 
@@ -122,7 +124,7 @@ cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {
 });
 
 // ローカルのリポジトリを削除する
-cartridge.get("/remove/:vendorId/:cartridgeId", (c) => {
+cartridges.get("/remove/:vendorId/:cartridgeId", (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
   const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
