@@ -1,14 +1,10 @@
-import { dirname } from "@std/path";
 import { Hono } from "@hono/hono";
-import { Gh } from "../Gh.js";
 import { command } from "../command.js";
 
 export const console = new Hono();
 
 // リモートからローカルに clone する
 console.get("/clone", (c) => {
-  const dir = "./consoles/main";
-
   // GitHub から clone
   command([
     "git",

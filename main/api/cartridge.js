@@ -42,7 +42,6 @@ cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
 cartridge.get("/put/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
-  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // GitHub に POST
   await Gh.fetch("user/repos", {
@@ -108,7 +107,6 @@ cartridge.get("/pull/:vendorId/:cartridgeId", (c) => {
 cartridge.get("/delete/:vendorId/:cartridgeId", async (c) => {
   const vendorId = c.req.param("vendorId");
   const cartridgeId = c.req.param("cartridgeId");
-  const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
 
   // リモートのリポジトリを削除
   await Gh.fetch(`repos/${vendorId}/8ppoi-cartridge-${cartridgeId}`, {
