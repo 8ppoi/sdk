@@ -21,8 +21,10 @@ console.get("/clone", (c) => {
 console.get("/pull", (c) => {
   const dir = "./consoles/main";
 
+  const results = [];
+
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
-expandAllTags();
-  return c.html("✅ リモートからローカルに pull しました\n");
+  results.push(expandAllTags());
+  return c.html(results.join() + "✅ リモートからローカルに pull しました\n");
 });
