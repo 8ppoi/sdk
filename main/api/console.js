@@ -19,7 +19,9 @@ console.get("/clone", (c) => {
   ]);
   results.push(expandAllTags());
 
-  return c.html("✅ リモートからローカルに clone しました\n");
+  results.push("✅ リモートからローカルに clone しました\n");
+
+  return c.html(results.join());
 });
 
 // リモートからローカルに pull する
@@ -32,5 +34,6 @@ console.get("/pull", (c) => {
   command(["git", "pull"], { cwd: dir });
   results.push(expandAllTags());
 
-  return c.html(results.join() + "✅ リモートからローカルに pull しました\n");
+  results.push("✅ リモートからローカルに pull しました\n");
+  return c.html(results.join());
 });
