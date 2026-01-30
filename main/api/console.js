@@ -20,8 +20,7 @@ console.get("/clone", (c) => {
   results.push(expandAllTags());
 
   results.push("✅ リモートからローカルに clone しました\n");
-
-  return c.html(results.join());
+  return c.html(results.join(""));
 });
 
 // リモートからローカルに pull する
@@ -35,5 +34,5 @@ console.get("/pull", (c) => {
   results.push(expandAllTags());
 
   results.push("✅ リモートからローカルに pull しました\n");
-  return c.html(results.join());
+  return c.html(results.join(""));
 });
