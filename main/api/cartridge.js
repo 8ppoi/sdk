@@ -32,7 +32,9 @@ cartridge.get("/init/:vendorId/:cartridgeId/:username?", (c) => {
     "remote",
     "add",
     "origin",
-    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
+    `https://${
+      username ?? vendorId
+    }@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
   ], { cwd: dir });
 
   return c.html("✅ ローカルにリポジトリを作りました\n");
@@ -78,7 +80,9 @@ cartridge.get("/clone/:vendorId/:cartridgeId/:username?", (c) => {
   command([
     "git",
     "clone",
-    `https://${username ?? vendorId}@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
+    `https://${
+      username ?? vendorId
+    }@github.com/${vendorId}/8ppoi-cartridge-${cartridgeId}.git`,
     dir,
   ]);
   command([

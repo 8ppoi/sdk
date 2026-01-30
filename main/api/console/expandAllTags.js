@@ -23,9 +23,10 @@ export function expandAllTags() {
     }
 
     Deno.mkdirSync(targetDir, { recursive: true });
-    command(["sh", "-c", `git archive ${tag} | tar -x -C ../${tag}`], { cwd: mainDir });
+    command(["sh", "-c", `git archive ${tag} | tar -x -C ../${tag}`], {
+      cwd: mainDir,
+    });
     results.push(`✅ 展開： ${targetDir}を展開しました\n`);
   }
   return results.join("");
 }
-
