@@ -8,6 +8,8 @@ export const console = new Hono();
 console.get("/clone", (c) => {
   const dir = "./consoles/main";
 
+  const results = [];
+
   // GitHub から clone
   command([
     "git",
@@ -15,6 +17,7 @@ console.get("/clone", (c) => {
     `https://github.com/8ppoi/console.git`,
     dir,
   ]);
+  results.push(expandAllTags());
 
   return c.html("✅ リモートからローカルに clone しました\n");
 });
@@ -28,5 +31,6 @@ console.get("/pull", (c) => {
   // GitHub から pull
   command(["git", "pull"], { cwd: dir });
   results.push(expandAllTags());
+
   return c.html(results.join() + "✅ リモートからローカルに pull しました\n");
 });
