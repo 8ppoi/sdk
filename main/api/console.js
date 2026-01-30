@@ -21,7 +21,7 @@ vendor.get("/clone", (c) => {
 });
 
 // リモートからローカルに pull する
-vendor.get("/pull", (c) => {
+console.get("/pull", (c) => {
   const dir = "./consoles/main";
 
   // GitHub から pull
