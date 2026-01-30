@@ -6,7 +6,7 @@ import { command } from "../command.js";
 export const console = new Hono();
 
 // リモートからローカルに clone する
-vendor.get("/clone", (c) => {
+console.get("/clone", (c) => {
   const dir = "./consoles/main";
 
   // GitHub から clone
