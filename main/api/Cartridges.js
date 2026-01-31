@@ -10,7 +10,7 @@ export class Cartridges {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
     const username = c.req.param("username");
-    const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
+    const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // ディレクトリを作成
     Deno.mkdirSync(dir, { recursive: true });
@@ -59,7 +59,7 @@ export class Cartridges {
   static put(c) {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
-    const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
+    const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // リモートリポジトリへ push
     command(["git", "add", "-A"], { cwd: dir });
@@ -74,7 +74,7 @@ export class Cartridges {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
     const username = c.req.param("username");
-    const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
+    const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // GitHub から clone
     command([
@@ -99,7 +99,7 @@ export class Cartridges {
   static pull(c) {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
-    const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
+    const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // GitHub から pull
     command(["git", "pull"], { cwd: dir });
@@ -125,7 +125,7 @@ export class Cartridges {
   static remove(c) {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
-    const dir = `./vendors/${vendorId}/cartridges/${cartridgeId}`;
+    const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // ディレクトリを削除
     Deno.removeSync(dir, { recursive: true });
