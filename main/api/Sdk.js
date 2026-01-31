@@ -6,7 +6,7 @@ const currentFileDir = dirname(new URL(import.meta.url).pathname);
 export class Sdk {
   // リモートからローカルに pull する
   static pull(c) {
-    const dir = `${currentFileDir}/../../sdk`;
+    const dir = `${currentFileDir}/../..`;
 
     const results = [];
 
