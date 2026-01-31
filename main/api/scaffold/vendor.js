@@ -21,10 +21,9 @@ vendor.get("/:vendorId", async (c) => {
   Deno.writeTextFileSync(
     `${dir}/meta.json`,
     `{
-    "name": "${vendorId}",
-    "avatar": "avatar",
-    "description": "私の名前は ${vendorId} です。"
-  }`,
+  "name": "${vendorId}",
+  "description": "私の名前は ${vendorId} です。"
+}`,
   );
 
   return c.html("✅ ローカルリポジトリをスキャフォールドしました\n");

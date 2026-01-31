@@ -2,8 +2,7 @@
   <h1>${_.cartridge.name}</h1>
   <div class="indent flex-column">
     <div id="console">
-      <img id="artwork" style="width: 100%;" src="${_.cartridge.artwork ? `./${_.cartridge.artwork}` : `/static/noimage.svg`}">
-    </div>
+      <img id="artwork" style="width: 100%;" src="./artwork" onerror="this.onerror=null; this.src='/static/noimage.svg';">    </div>
 ${renderIf(_.cartridge.description, "./cartridge/description.html", { description: _.cartridge.description })}
   </div>
 </div>

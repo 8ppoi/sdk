@@ -1,7 +1,7 @@
 import { Hono } from "@hono/hono";
 import { serveStatic } from "@hono/hono/deno";
 import { render } from "renderer";
-import { vendors } from "./main/vendors.js";
+import { vendors, getVendor, getCartridge } from "./main/vendors.js";
 import { cartridges } from "./main/cartridges.js";
 import { Gh } from "./main/Gh.js";
 import { api } from "./main/api.js";
@@ -15,10 +15,18 @@ app.onError((err, c) => {
   return c.text("❌ " + err, 500);
 });
 
-app.get("/", (c) =>
-  c.html(render("./main/layouts/default.html", {
+ssr.get("/", (c) => {
+  const vendorId = "8ppoi";
+  const cartridgeId = "invader-x";
+
+  return c.html(render("./main/layouts/default.html", {
     templatePath: "../templates/index.html",
-  })));
+    _: {
+      cartridge: getCartridge(vendorId, cartridgeId),
+      vendor: getVendor(vendorId),
+    },
+  }));
+});
 
 app.route("/vendors/", vendors);
 app.route("/cartridges/", cartridges);

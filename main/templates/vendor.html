@@ -1,8 +1,7 @@
 <div class="indent">
   <h1>${_.vendor.name}</h1>
   <div class="indent flex-column">
-    <img src="./${_.vendor.avatar}" style="width: 160px; height: 160px;">
-${renderIf(_.vendor.description, "./vendor/description.html", { description: _.vendor.description })}
+    <img src="./avatar" style="width: 160px; height: 160px;" onerror="this.onerror=null; this.src='/static/noimage.svg';">${renderIf(_.vendor.description, "./vendor/description.html", { description: _.vendor.description })}
 ${renderIf(_.vendorCartridges, "./vendor/vendorCartridges.html", { vendorCartridges: _.vendorCartridges })}
   </div>
 </div>

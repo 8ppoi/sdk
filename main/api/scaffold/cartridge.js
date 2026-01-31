@@ -21,7 +21,6 @@ cartridge.get("/:vendorId/:cartridgeId", async (c) => {
     `{
   "consoleVersion": "1.0.0-alpha.1",
   "name": "${cartridgeId}",
-  "artwork": "artwork",
   "description": "B0（キーボードではZ）とB1（キーボードではX）を押すと、色の付いた文字が踊ります🎵"
 }`,
   );
