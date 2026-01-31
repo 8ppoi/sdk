@@ -1,10 +1,13 @@
 import { Hono } from "@hono/hono";
+import { Sdk } from "./api/Sdk.js";
 import { Consoles } from "./api/Consoles.js";
 import { Vendors } from "./api/Vendors.js";
 import { Cartridges } from "./api/Cartridges.js";
 import { scaffold } from "./api/scaffold.js";
 
 export const api = new Hono();
+
+api.all("/sdk/pull", (c) => Sdk.pull(c));
 
 api.all("/consoles/clone", (c) => Consoles.clone(c));
 api.all("/consoles/pull", (c) => Consoles.pull(c));
