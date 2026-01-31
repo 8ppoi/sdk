@@ -4,9 +4,9 @@
 誰でも簡単にカートリッジが作れます。
 
 公式サイト:
-[https://8ppoi.kentasaito.deno.net/](https://8ppoi.kentasaito.deno.net/)
+[https://8ppoi.com/](https://8ppoi.com/)
 SDKインストール:
-[https://8ppoi.kentasaito.deno.net/sdk/](https://8ppoi.kentasaito.deno.net/sdk/)
+[https://8ppoi.com/sdk/](https://8ppoi.com/sdk/)
 
 ## 概要
 
