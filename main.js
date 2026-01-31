@@ -16,10 +16,10 @@ app.onError((err, c) => {
   return c.text("❌ " + err, 500);
 });
 
-app.get("/vendors/*/cartridges/*/artwork", respondImageWithMime);
-app.get("/vendors/*/avatar", respondImageWithMime);
+app.get("/vendors/:vendorId/cartridges/:dartridgeId/artwork", respondImageWithMime);
+app.get("/vendors/:vendorId/avatar", respondImageWithMime);
 
-ssr.get("/", (c) => {
+app.get("/", (c) => {
   const vendorId = "8ppoi";
   const cartridgeId = "invader-x";
 

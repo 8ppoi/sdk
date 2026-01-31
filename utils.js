@@ -1,8 +1,11 @@
+import { dirname } from "@std/path";
 import { fileTypeFromFile } from "file-type";
+
+const currentFileDir = dirname(new URL(import.meta.url).pathname);
 
 export async function respondImageWithMime(c)
 {
-  const filePath = `./sdk${c.req.path}`;
+  const filePath = `${currentFileDir}/${c.req.path}`;
 
   let mime = "application/octet-stream";
 

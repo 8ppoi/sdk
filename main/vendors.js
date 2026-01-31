@@ -82,8 +82,13 @@ vendors.get(
 
 vendors.get(
   "/:vendorId/cartridges/:cartridgeId/",
-  (c) =>
-    c.html(render("./main/layouts/default.html", {
+  (c) => {
+
+  const path = c.req.path;
+  const params = c.req.param();
+  console.log({ path, params });
+
+    return c.html(render("./main/layouts/default.html", {
       templatePath: "../templates/cartridge.html",
       _: {
         cartridge: getCartridge(
@@ -92,5 +97,6 @@ vendors.get(
         ),
         vendor: getVendor(c.req.param("vendorId")),
       },
-    })),
+    }))
+  }
 );
