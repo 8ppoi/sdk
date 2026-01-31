@@ -60,7 +60,7 @@ export class Vendors {
     command(["git", "add", "-A"], { cwd: dir });
     command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
     command(["git", "push", "-u", "origin", "main"], { cwd: dir });
-    command(["curl", "https://8ppoi.com/api/vendors/pull/${vendorId}"], { cwd: dir });
+    command(["curl", `https://8ppoi.com/api/vendors/pull/${vendorId}`], { cwd: dir });
 
     return c.html("✅ ローカルからリモートに push しました\n");
   }

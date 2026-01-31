@@ -56,7 +56,7 @@ export class Cartridges {
   }
 
   // ローカルからリモートに push する
-  static put(c) {
+  static push(c) {
     const vendorId = c.req.param("vendorId");
     const cartridgeId = c.req.param("cartridgeId");
     const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
@@ -65,6 +65,7 @@ export class Cartridges {
     command(["git", "add", "-A"], { cwd: dir });
     command(["git", "commit", "--allow-empty-message", "-m", ""], { cwd: dir });
     command(["git", "push", "-u", "origin", "main"], { cwd: dir });
+    command(["curl", `https://8ppoi.com/api/cartridges/pull/${vendorId}/${cartridgeId}`], { cwd: dir });
 
     return c.html("✅ ローカルからリモートに push しました\n");
   }
