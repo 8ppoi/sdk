@@ -2,7 +2,6 @@ import { dirname } from "@std/path";
 import { Gh } from "../Gh.js";
 import { command } from "../command.js";
 
-
 const currentFileDir = dirname(new URL(import.meta.url).pathname);
 
 export class Vendors {
