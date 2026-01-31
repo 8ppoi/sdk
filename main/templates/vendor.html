@@ -2,6 +2,10 @@
   <h1>${_.vendor.name}</h1>
   <div class="indent flex-column">
     <img src="./avatar" style="width: 160px; height: 160px;" onerror="this.onerror=null; this.src='/static/noimage.svg';">${renderIf(_.vendor.description, "./vendor/description.html", { description: _.vendor.description })}
+    <div style="text-align: right">
+      <a href="/api/vendors/pull/${_.vendor.id}">GitHub から pull</a>
+      <a href="/api/vendors/remove/${_.vendor.id}">SDK から削除</a>
+    </div>
 ${renderIf(_.vendorCartridges, "./vendor/vendorCartridges.html", { vendorCartridges: _.vendorCartridges })}
   </div>
 </div>
