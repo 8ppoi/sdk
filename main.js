@@ -5,6 +5,7 @@ import { vendors, getVendor, getCartridge } from "./main/vendors.js";
 import { cartridges } from "./main/cartridges.js";
 import { Gh } from "./main/Gh.js";
 import { api } from "./main/api.js";
+import { respondImageWithMime } from "./utils.js";
 
 await Gh.init(Deno.readTextFileSync("./.credentials"));
 
@@ -14,6 +15,9 @@ app.onError((err, c) => {
   console.error(err);
   return c.text("❌ " + err, 500);
 });
+
+app.get("/vendors/*/cartridges/*/artwork", respondImageWithMime);
+app.get("/vendors/*/avatar", respondImageWithMime);
 
 ssr.get("/", (c) => {
   const vendorId = "8ppoi";

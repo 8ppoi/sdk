@@ -3,6 +3,7 @@
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.4",
     "@hono/hono": "jsr:@hono/hono@^4.11.5",
+    "file-type": "npm:file-type",
     "renderer": "./main/renderer.js"
   },
   "fmt": {
