@@ -13,7 +13,7 @@ const app = new Hono();
 
 app.onError((err, c) => {
   console.error(err);
-  return c.text("❌ " + err, 500);
+  return c.text("❌ " + err.stack, 500);
 });
 
 app.get("/vendors/:vendorId/cartridges/:dartridgeId/artwork", respondImageWithMime);

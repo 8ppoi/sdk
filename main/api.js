@@ -24,3 +24,6 @@ api.all("/cartridges/clone/:vendorId/:cartridgeId/:username?", (c) => Cartridges
 api.all("/cartridges/pull/:vendorId/:cartridgeId", (c) => Cartridges.pull(c));
 api.all("/cartridges/delete/:vendorId/:cartridgeId", async (c) => Cartridges.delete(c));
 api.all("/cartridges/remove/:vendorId/:cartridgeId", (c) => Cartridges.remove(c));
+
+api.all("/scaffold/vendor", (c) => Scaffold.vendor(c));
+api.all("/scaffold/cartridge", (c) => Scaffold.cartridge(c));
