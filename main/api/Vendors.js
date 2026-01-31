@@ -94,7 +94,7 @@ export class Vendors {
     const dir = `${currentFileDir}/../../vendors/${vendorId}`;
 
     // GitHub から pull
-    command(["git", "pull"], { cwd: dir });
+    command(["git", "pull", "--tags"], { cwd: dir });
 
     return c.html("✅ リモートからローカルに pull しました\n");
   }

@@ -103,7 +103,7 @@ export class Cartridges {
     const dir = `${currentFileDir}/../../vendors/${vendorId}/cartridges/${cartridgeId}`;
 
     // GitHub から pull
-    command(["git", "pull"], { cwd: dir });
+    command(["git", "pull", "--tags"], { cwd: dir });
 
     return c.html("✅ リモートからローカルに pull しました\n");
   }

@@ -31,7 +31,7 @@ export class Consoles {
     const results = [];
 
     // GitHub から pull
-    command(["git", "pull"], { cwd: dir });
+    command(["git", "pull", "--tags"], { cwd: dir });
     results.push(expandAllTags());
 
     results.push("✅ リモートからローカルに pull しました\n");
